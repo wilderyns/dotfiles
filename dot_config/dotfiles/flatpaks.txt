@@ -5,6 +5,7 @@ com.protonvpn.www
 com.ranfdev.DistroShelf
 com.usebruno.Bruno
 dev.deedles.Trayscale
+io.edcd.EDMarketConnector
 io.github.Faugus.faugus-launcher
 io.podman_desktop.PodmanDesktop
 it.mijorus.gearlever

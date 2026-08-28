@@ -1,0 +1,35 @@
+{{- $profile := includeTemplate "platform/profile.tmpl" . -}}
+{{- if eq $profile "arch" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v omarchy >/dev/null 2>&1; then
+  echo "Arch Linux detected without Omarchy; skipping Omarchy plugin setup."
+  exit 0
+fi
+
+plugin_dir="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/plugins"
+
+ensure_omarchy_plugin() {
+  local id="$1"
+  local repository="$2"
+
+  if [[ -d "$plugin_dir/$id" ]]; then
+    echo "Omarchy plugin $id is already installed; ensuring it is enabled."
+    omarchy plugin enable "$id"
+  else
+    omarchy plugin add "$repository" --enable --yes
+  fi
+}
+
+ensure_omarchy_plugin \
+  better.displays \
+  https://github.com/nightdevil00/better.displays.git
+
+# Installing this plugin does not opt the machine into automatic monitor
+# management. Configure and enable that later from the hyprmoncfg panel; when
+# enabled, its profiles can supersede manual changes made by Better Displays.
+ensure_omarchy_plugin \
+  crmne.hyprmoncfg \
+  https://github.com/crmne/omarchy-hyprmoncfg.git
+{{- end }}

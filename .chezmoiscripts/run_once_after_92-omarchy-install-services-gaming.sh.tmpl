@@ -1,0 +1,43 @@
+{{- $profile := includeTemplate "platform/profile.tmpl" . -}}
+{{- if eq $profile "arch" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v omarchy >/dev/null 2>&1; then
+  echo "Arch Linux detected without Omarchy; skipping Omarchy services and gaming setup."
+  exit 0
+fi
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/chezmoi/omarchy"
+mkdir -p "$state_dir"
+
+ensure_omarchy_install() {
+  local marker="$1"
+  local package="$2"
+  shift 2
+
+  if [[ -f "$state_dir/$marker" ]] && pacman -Q "$package" >/dev/null 2>&1; then
+    echo "$package is already installed and configured by Omarchy."
+    return
+  fi
+
+  "$@"
+  touch "$state_dir/$marker"
+}
+
+# These installers include Omarchy-specific services, firewall rules, hardware
+# detection, menu integration, and application configuration.
+ensure_omarchy_install sunshine-v1 sunshine \
+  omarchy install service sunshine
+ensure_omarchy_install steam-v1 steam \
+  omarchy install gaming steam
+ensure_omarchy_install retroarch-v1 retroarch \
+  omarchy install gaming retroarch
+ensure_omarchy_install tailscale-v1 tailscale \
+  omarchy install service tailscale
+
+# Keep this last: Omarchy may offer to reboot after enabling the DKMS driver or
+# adding the user to the input group.
+ensure_omarchy_install xbox-controllers-v1 xpadneo-dkms \
+  omarchy install gaming xbox-controllers
+{{- end }}

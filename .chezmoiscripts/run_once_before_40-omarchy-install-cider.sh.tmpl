@@ -1,0 +1,37 @@
+{{- $profile := includeTemplate "platform/profile.tmpl" . -}}
+{{- if eq $profile "arch" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v omarchy >/dev/null 2>&1; then
+  echo "Arch Linux detected without Omarchy; skipping Cider repository setup."
+  exit 0
+fi
+
+cider_key=A0CD6B993438E22634450CDD2A236C3F42A61682
+
+if pacman -Q cider >/dev/null 2>&1 && grep -qx '\[cidercollective\]' /etc/pacman.conf; then
+  echo "Cider and its package repository are already installed."
+  exit 0
+fi
+
+if ! sudo pacman-key --list-keys "$cider_key" >/dev/null 2>&1; then
+  curl -fsSL https://repo.cider.sh/ARCH-GPG-KEY | sudo pacman-key --add -
+fi
+sudo pacman-key --lsign-key "$cider_key"
+
+if ! grep -qx '\[cidercollective\]' /etc/pacman.conf; then
+  sudo tee -a /etc/pacman.conf >/dev/null <<'EOF'
+
+# Cider Collective Repository
+[cidercollective]
+SigLevel = Required TrustedOnly
+Server = https://repo.cider.sh/arch
+EOF
+fi
+
+# Refresh after adding the repository, then use Omarchy's package wrapper for
+# the idempotent installation.
+sudo pacman -Sy --noconfirm
+omarchy pkg add cider
+{{- end }}

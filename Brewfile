@@ -51,7 +51,10 @@ brew 'neovim'
 brew 'git'
 brew 'lazygit'
 brew 'make'
-brew 'telnet'
+# Homebrew's `telnet` formula is macOS-only. GNU inetutils provides the
+# `telnet` command on Linux.
+brew 'telnet' if OS.mac?
+brew 'inetutils' if OS.linux?
 brew 'gpg'
 brew 'gawk'
 brew 'mkcert'
@@ -148,7 +151,8 @@ brew 'hashcat'
 brew 'hydra'
 brew 'nikto'
 brew 'john'
-brew 'macchanger'
+# Homebrew's macchanger formula is a macOS implementation.
+brew 'macchanger' if OS.mac?
 brew 'masscan'
 brew 'medusa'
 brew 'nmap'

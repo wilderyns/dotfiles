@@ -34,4 +34,12 @@ flatpak --system install \
   --or-update \
   flathub \
   "${apps[@]}"
+
+# Plasma normally notices new desktop entries automatically, but a forced
+# service-cache rebuild makes newly installed Flatpaks appear immediately.
+if command -v kbuildsycoca6 >/dev/null 2>&1; then
+  kbuildsycoca6
+elif command -v kbuildsycoca5 >/dev/null 2>&1; then
+  kbuildsycoca5
+fi
 {{- end }}

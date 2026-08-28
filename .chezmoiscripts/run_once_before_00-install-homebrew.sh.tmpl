@@ -1,0 +1,31 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+find_brew() {
+  if command -v brew >/dev/null 2>&1; then
+    command -v brew
+  elif [[ -x /opt/homebrew/bin/brew ]]; then
+    printf '%s\n' /opt/homebrew/bin/brew
+  elif [[ -x /usr/local/bin/brew ]]; then
+    printf '%s\n' /usr/local/bin/brew
+  elif [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    printf '%s\n' /home/linuxbrew/.linuxbrew/bin/brew
+  fi
+}
+
+brew_bin="$(find_brew || true)"
+if [[ -z "$brew_bin" ]]; then
+  echo "Installing Homebrew..."
+  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh \
+    | NONINTERACTIVE=1 /bin/bash
+  brew_bin="$(find_brew || true)"
+fi
+
+if [[ -z "$brew_bin" ]]; then
+  echo "Homebrew installation did not produce a known brew executable." >&2
+  exit 1
+fi
+
+eval "$("$brew_bin" shellenv)"
+{{- end }}

@@ -1,0 +1,27 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Extension manifest hash: {{ include "dot_config/dotfiles/vscode-extensions.txt" | sha256sum }}
+
+if [[ -x /home/linuxbrew/.linuxbrew/bin/code ]]; then
+  export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+elif [[ -x /opt/homebrew/bin/code ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+elif [[ -x /usr/local/bin/code ]]; then
+  export PATH="/usr/local/bin:$PATH"
+fi
+
+if ! command -v code >/dev/null 2>&1; then
+  echo "VS Code is not installed; skipping extension installation." >&2
+  exit 1
+fi
+
+manifest="$HOME/.config/dotfiles/vscode-extensions.txt"
+while IFS= read -r extension; do
+  [[ -z "$extension" || "$extension" == \#* ]] && continue
+  if ! code --list-extensions | grep -Fxiq "$extension"; then
+    code --install-extension "$extension" --force
+  fi
+done < "$manifest"
+{{- end }}

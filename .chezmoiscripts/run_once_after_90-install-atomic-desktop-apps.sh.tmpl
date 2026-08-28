@@ -1,0 +1,61 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v rpm-ostree >/dev/null 2>&1; then
+  echo "Non-atomic Linux detected; Ghostty and 1Password system installation is not automated by this script."
+  exit 0
+fi
+
+if [[ ! -r /etc/os-release ]]; then
+  echo "Cannot determine the Fedora version without /etc/os-release." >&2
+  exit 1
+fi
+
+# shellcheck disable=SC1091
+. /etc/os-release
+if [[ "${ID_LIKE:-}" != *fedora* && "${ID:-}" != fedora && "${ID:-}" != bazzite ]]; then
+  echo "rpm-ostree is present, but this is not a Fedora-derived atomic desktop." >&2
+  exit 1
+fi
+
+ghostty_repo=/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:scottames:ghostty.repo
+if [[ ! -f "$ghostty_repo" ]]; then
+  tmp_repo="$(mktemp)"
+  curl -fsSL \
+    "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${VERSION_ID}/scottames-ghostty-fedora-${VERSION_ID}.repo" \
+    -o "$tmp_repo"
+  sudo install -m 0644 "$tmp_repo" "$ghostty_repo"
+  rm -f "$tmp_repo"
+fi
+
+onepassword_repo=/etc/yum.repos.d/1password.repo
+if [[ ! -f "$onepassword_repo" ]]; then
+  sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+  tmp_repo="$(mktemp)"
+  cat > "$tmp_repo" <<'EOF'
+[1password]
+name=1Password Stable Channel
+baseurl=https://downloads.1password.com/linux/rpm/stable/$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://downloads.1password.com/linux/keys/1password.asc
+EOF
+  sudo install -m 0644 "$tmp_repo" "$onepassword_repo"
+  rm -f "$tmp_repo"
+fi
+
+packages=()
+rpm -q ghostty >/dev/null 2>&1 || packages+=(ghostty)
+rpm -q 1password >/dev/null 2>&1 || packages+=(1password)
+
+if (( ${#packages[@]} == 0 )); then
+  echo "Ghostty and 1Password are already installed."
+  exit 0
+fi
+
+rpm-ostree refresh-md
+rpm-ostree install "${packages[@]}"
+echo "Atomic desktop packages were layered successfully. Reboot to activate: ${packages[*]}"
+{{- end }}

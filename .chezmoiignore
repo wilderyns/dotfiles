@@ -1,0 +1,14 @@
+# Finder metadata and generated application state.
+**/.DS_Store
+.config/nvim/pack/**
+README.md
+
+# VS Code stores user settings in different locations on macOS and Linux.
+{{- if ne .chezmoi.os "darwin" }}
+Library/Application Support/Code
+Library/Application Support/Code/**
+{{- end }}
+{{- if ne .chezmoi.os "linux" }}
+.config/Code
+.config/Code/**
+{{- end }}

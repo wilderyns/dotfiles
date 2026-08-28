@@ -1,0 +1,28 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -r "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
+  echo "Oh My Zsh is already installed."
+  exit 0
+fi
+
+if [[ -x /home/linuxbrew/.linuxbrew/bin/zsh ]]; then
+  export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+elif [[ -x /opt/homebrew/bin/zsh ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+elif [[ -x /usr/local/bin/zsh ]]; then
+  export PATH="/usr/local/bin:$PATH"
+fi
+
+if ! command -v zsh >/dev/null 2>&1; then
+  echo "Oh My Zsh requires zsh; the Brewfile should install it first." >&2
+  exit 1
+fi
+
+# Unattended mode avoids launching a nested shell or changing the login shell.
+# --keep-zshrc ensures the upstream installer never replaces chezmoi's file.
+RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c \
+  "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+  "" --unattended --keep-zshrc
+{{- end }}

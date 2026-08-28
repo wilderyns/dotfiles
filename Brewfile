@@ -1,6 +1,9 @@
 # Dotfile syncing
 brew 'chezmoi'
 
+# Universal Blue provides Linux desktop casks used on Bazzite.
+tap 'ublue-os/tap' if OS.linux?
+
 ### Dev tools and languages ###
 brew 'php'
 cask 'jamovi' if OS.mac?
@@ -12,6 +15,7 @@ cask 'jamovi' if OS.mac?
 brew 'libpq'
 brew 'wget'
 brew 'zsh'
+brew 'starship'
 brew 'hugo'
 brew 'openvpn'
 brew 'opentofu'
@@ -22,6 +26,7 @@ cask 'android-platform-tools' if OS.mac?
 cask 'android-commandlinetools' if OS.mac?
 cask 'android-ndk' if OS.mac?
 cask 'visual-studio-code' if OS.mac?
+cask 'visual-studio-code-linux' if OS.linux?
 
 # Latex document preparation
 brew 'pandoc'
@@ -49,7 +54,8 @@ brew 'gawk'
 brew 'mkcert'
 brew 'ripgrep'
 brew 'fd'
-cask 'codex' if OS.mac?
+# The upstream cask ships native macOS and Linux binaries.
+cask 'codex'
 # Neovim/Mason manages tree-sitter-cli and language servers such as vtsls.
 
 # Web dev projects

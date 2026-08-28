@@ -1,0 +1,22 @@
+[tools]
+{{- if eq .chezmoi.os "darwin" }}
+"gem:cocoapods" = "latest"
+{{- end }}
+"gem:debug" = "latest"
+"gem:foreman" = "latest"
+"gem:htmlbeautifier" = "latest"
+"gem:rails" = "latest"
+"gem:ruby-lsp" = "latest"
+"gem:solargraph" = "latest"
+"gem:standard" = "latest"
+flutter = "latest"
+go = "latest"
+java = "temurin"
+node = "latest"
+python = "latest"
+ruby = "latest"
+rust = "latest"
+yarn = "latest"
+
+[settings]
+auto_update = true

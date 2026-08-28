@@ -1,0 +1,19 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+mise_bin="$HOME/.local/bin/mise"
+if [[ -x "$mise_bin" ]]; then
+  echo "mise is already installed at $mise_bin"
+  exit 0
+fi
+
+# This is mise's zsh-specific installer. It also appends an activation line;
+# chezmoi applies the managed .zshrc afterwards, replacing that temporary line.
+curl -fsSL https://mise.run/zsh | sh
+
+if [[ ! -x "$mise_bin" ]]; then
+  echo "mise installation failed: $mise_bin was not created." >&2
+  exit 1
+fi
+{{- end }}

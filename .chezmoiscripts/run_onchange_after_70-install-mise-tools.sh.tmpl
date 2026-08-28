@@ -1,0 +1,14 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# mise config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
+
+mise_bin="$HOME/.local/bin/mise"
+if [[ ! -x "$mise_bin" ]]; then
+  echo "mise is not installed; skipping configured tools." >&2
+  exit 1
+fi
+
+"$mise_bin" install --yes
+{{- end }}

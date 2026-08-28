@@ -1,0 +1,40 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{- if eq .chezmoi.os "darwin" }}
+desired_shell=/bin/zsh
+{{- else }}
+if [[ -x /home/linuxbrew/.linuxbrew/bin/zsh ]]; then
+  desired_shell=/home/linuxbrew/.linuxbrew/bin/zsh
+elif command -v zsh >/dev/null 2>&1; then
+  desired_shell="$(command -v zsh)"
+else
+  echo "zsh is not installed; cannot set the login shell." >&2
+  exit 1
+fi
+{{- end }}
+
+current_shell="${SHELL:-}"
+if command -v getent >/dev/null 2>&1; then
+  current_shell="$(getent passwd "$USER" | cut -d: -f7)"
+fi
+
+if [[ "$current_shell" == "$desired_shell" ]]; then
+  echo "Login shell is already $desired_shell"
+  exit 0
+fi
+
+if ! grep -qxF "$desired_shell" /etc/shells; then
+  printf '%s\n' "$desired_shell" | sudo tee -a /etc/shells >/dev/null
+fi
+
+if command -v chsh >/dev/null 2>&1; then
+  chsh -s "$desired_shell"
+elif command -v usermod >/dev/null 2>&1; then
+  sudo usermod -s "$desired_shell" "$USER"
+else
+  echo "Neither chsh nor usermod is available; set your login shell to $desired_shell manually." >&2
+  exit 1
+fi
+{{- end }}

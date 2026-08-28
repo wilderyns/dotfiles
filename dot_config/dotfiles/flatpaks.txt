@@ -11,6 +11,7 @@ io.podman_desktop.PodmanDesktop
 it.mijorus.gearlever
 md.obsidian.Obsidian
 net.retrodeck.retrodeck
+org.desktop_plus.desktop-plus
 org.filezillaproject.Filezilla
 org.kde.filelight
 sh.cider.Cider

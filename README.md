@@ -3,6 +3,7 @@
 Hello and welcome to my dotfiles, designed to work between my Mac and Bazzite installs (but should theoretically work on Fedora too), all managed by [chezmoi](https://www.chezmoi.io/).
 
 ## What's Included
+
 - [mise](https://github.com/jdx/mise): manages language versions, with the global `mise.toml` providing Ruby (with rails, debug, foreman, htmlbeautifier, ruby-lsp, solargraph, and standard) Go, Flutter, Java (temurin), Python, Node (with Yarn), and Rust. All at their latest versions.
 - [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - [starship](https://github.com/starship/starship): with [catppuccin](https://github.com/catppuccin/nvim) theme.

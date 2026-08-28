@@ -87,6 +87,7 @@ cask 'daisydisk'	if OS.mac?
 cask 'discord'	if OS.mac?
 cask 'cyberduck'	if OS.mac?
 cask 'firefox'	if OS.mac?
+cask 'chromium'	if OS.mac?
 cask 'gcloud-cli'	if OS.mac?
 cask 'github' if OS.mac?
 cask 'google-chrome'	if OS.mac?

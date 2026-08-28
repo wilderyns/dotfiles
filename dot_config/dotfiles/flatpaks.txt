@@ -1,4 +1,4 @@
-# Applications not already supplied by the standard KDE Bazzite image.
+# Flatpak application list
 com.discordapp.Discord
 com.github.zocker_160.SyncThingy
 com.protonvpn.www
@@ -15,3 +15,5 @@ org.desktop_plus.desktop-plus
 org.filezillaproject.Filezilla
 org.kde.filelight
 sh.cider.Cider
+org.chromium.Chromium
+org.mozilla.firefox

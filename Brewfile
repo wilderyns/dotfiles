@@ -49,6 +49,7 @@ brew 'gzip'
 cask 'godot' if OS.mac?
 brew 'neovim'
 brew 'git'
+brew 'gh'
 brew 'lazygit'
 brew 'make'
 # Homebrew's `telnet` formula is macOS-only. GNU inetutils provides the

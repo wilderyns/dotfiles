@@ -14,6 +14,7 @@ cask 'jamovi' if OS.mac?
 
 brew 'libpq'
 brew 'wget'
+brew 'rclone'
 brew 'zsh'
 brew 'starship'
 brew 'hugo'
@@ -21,6 +22,8 @@ brew 'openvpn'
 brew 'opentofu'
 brew 'docker'
 brew 'docker-compose'
+brew 'podman' if OS.linux?
+brew 'podman-compose' if OS.linux?
 # CocoaPods is also managed by Mise through its gem backend.
 cask 'android-platform-tools' if OS.mac?
 cask 'android-commandlinetools' if OS.mac?

@@ -2,6 +2,21 @@
 
 Hello and welcome to my dotfiles, designed to work between my Mac and Bazzite installs (but should theoretically work on Fedora too), all managed by [chezmoi](https://www.chezmoi.io/).
 
+## What's Included
+- [mise](https://github.com/jdx/mise): manages language versions, with the global `mise.toml` providing Ruby (with rails, debug, foreman, htmlbeautifier, ruby-lsp, solargraph, and standard) Go, Flutter, Java (temurin), Python, Node (with Yarn), and Rust. All at their latest versions.
+- [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
+- [starship](https://github.com/starship/starship): with [catppuccin](https://github.com/catppuccin/nvim) theme.
+- [homebrew](https://github.com/Homebrew): a number of formulas and casks, see [Brewfile](https://github.com/wilderyns/dotfiles/blob/main/Brewfile)
+- [astronvim](https://github.com/AstroNvim/AstroNvim)
+- rpm-ostree (bazzite and atomic distros):
+  - Ghostty
+  - 1Password
+- flatpak:
+  - Bruno, Cider, Discord, DistroShelf
+  - Faugus, Filelight, FileZilla, Gear Lever
+  - Obsidian, Podman Desktop, Proton VPN
+  - RetroDECK, SyncThingy, Trayscale
+
 ## Daily workflow
 
 The source directory is an ordinary Git repository, so no special editor is

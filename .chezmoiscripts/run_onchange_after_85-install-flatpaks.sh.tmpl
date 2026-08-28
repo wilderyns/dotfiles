@@ -27,6 +27,19 @@ if (( ${#apps[@]} == 0 )); then
   exit 0
 fi
 
+# Make Flatpak's exported desktop entries visible to this process and to
+# services started by the current Plasma/systemd user session.
+export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+prepend_xdg_data_dir() {
+  case ":$XDG_DATA_DIRS:" in
+    *":$1:"*) ;;
+    *) XDG_DATA_DIRS="$1:$XDG_DATA_DIRS" ;;
+  esac
+}
+prepend_xdg_data_dir /var/lib/flatpak/exports/share
+prepend_xdg_data_dir "$HOME/.local/share/flatpak/exports/share"
+export XDG_DATA_DIRS
+
 flatpak --system install \
   --app \
   --assumeyes \
@@ -34,6 +47,13 @@ flatpak --system install \
   --or-update \
   flathub \
   "${apps[@]}"
+
+if command -v systemctl >/dev/null 2>&1; then
+  systemctl --user set-environment XDG_DATA_DIRS="$XDG_DATA_DIRS" || true
+fi
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+  dbus-update-activation-environment --systemd XDG_DATA_DIRS || true
+fi
 
 # Plasma normally notices new desktop entries automatically, but a forced
 # service-cache rebuild makes newly installed Flatpaks appear immediately.

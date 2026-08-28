@@ -53,4 +53,7 @@ On Bazzite (and other Fedora atomic distros), Ghostty and 1Password are layered 
 
 Linux Flatpaks are listed in `.config/dotfiles/flatpaks.txt` and installed at
 system scope from Flathub. The installer adds and updates listed applications;
-it does not remove unlisted applications.
+it does not remove unlisted applications. The extra application-menu workaround
+is restricted to Bazzite Plasma: its persistent environment hook is only
+rendered on Bazzite and is only loaded by Plasma, while the immediate Plasma
+cache refresh also verifies the active desktop session before it runs.

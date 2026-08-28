@@ -1,6 +1,9 @@
+{{- if eq .chezmoi.os "linux" -}}
+{{- if eq .chezmoi.osRelease.id "bazzite" -}}
 #!/bin/sh
 
-# Make Flatpak application exports visible to Plasma.
+# Plasma sources files in this directory when starting a session. This file is
+# rendered only on Bazzite, where Flatpak's export paths needed an explicit fix.
 flatpak_user="${XDG_DATA_HOME:-$HOME/.local/share}/flatpak/exports/share"
 flatpak_system="/var/lib/flatpak/exports/share"
 
@@ -24,3 +27,5 @@ XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 export XDG_DATA_DIRS
 
 unset flatpak_user flatpak_system
+{{- end -}}
+{{- end -}}

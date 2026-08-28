@@ -27,19 +27,6 @@ if (( ${#apps[@]} == 0 )); then
   exit 0
 fi
 
-# Make Flatpak's exported desktop entries visible to this process and to
-# services started by the current Plasma/systemd user session.
-export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
-prepend_xdg_data_dir() {
-  case ":$XDG_DATA_DIRS:" in
-    *":$1:"*) ;;
-    *) XDG_DATA_DIRS="$1:$XDG_DATA_DIRS" ;;
-  esac
-}
-prepend_xdg_data_dir /var/lib/flatpak/exports/share
-prepend_xdg_data_dir "$HOME/.local/share/flatpak/exports/share"
-export XDG_DATA_DIRS
-
 flatpak --system install \
   --app \
   --assumeyes \
@@ -48,18 +35,46 @@ flatpak --system install \
   flathub \
   "${apps[@]}"
 
-if command -v systemctl >/dev/null 2>&1; then
-  systemctl --user set-environment XDG_DATA_DIRS="$XDG_DATA_DIRS" || true
-fi
-if command -v dbus-update-activation-environment >/dev/null 2>&1; then
-  dbus-update-activation-environment --systemd XDG_DATA_DIRS || true
-fi
+is_bazzite() (
+  [[ -r /etc/os-release ]] || return 1
+  . /etc/os-release
+  [[ "${ID:-}" == "bazzite" ]]
+)
 
-# Plasma normally notices new desktop entries automatically, but a forced
-# service-cache rebuild makes newly installed Flatpaks appear immediately.
-if command -v kbuildsycoca6 >/dev/null 2>&1; then
-  kbuildsycoca6
-elif command -v kbuildsycoca5 >/dev/null 2>&1; then
-  kbuildsycoca5
+is_plasma_session() {
+  local desktop
+  desktop="${XDG_CURRENT_DESKTOP:-}:${XDG_SESSION_DESKTOP:-}:${DESKTOP_SESSION:-}"
+
+  [[ "${desktop,,}" == *kde* || "${desktop,,}" == *plasma* ]] ||
+    [[ "${KDE_FULL_SESSION:-}" == "true" ]] ||
+    { command -v pgrep >/dev/null 2>&1 && pgrep -u "$(id -u)" -x plasmashell >/dev/null 2>&1; }
+}
+
+if is_bazzite && is_plasma_session; then
+  # Bazzite's Plasma session did not always inherit Flatpak's exported desktop
+  # entry paths, so update the current session before rebuilding its cache.
+  export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+  prepend_xdg_data_dir() {
+    case ":$XDG_DATA_DIRS:" in
+      *":$1:"*) ;;
+      *) XDG_DATA_DIRS="$1:$XDG_DATA_DIRS" ;;
+    esac
+  }
+  prepend_xdg_data_dir /var/lib/flatpak/exports/share
+  prepend_xdg_data_dir "$HOME/.local/share/flatpak/exports/share"
+  export XDG_DATA_DIRS
+
+  if command -v systemctl >/dev/null 2>&1; then
+    systemctl --user set-environment XDG_DATA_DIRS="$XDG_DATA_DIRS" || true
+  fi
+  if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --systemd XDG_DATA_DIRS || true
+  fi
+
+  if command -v kbuildsycoca6 >/dev/null 2>&1; then
+    kbuildsycoca6
+  elif command -v kbuildsycoca5 >/dev/null 2>&1; then
+    kbuildsycoca5
+  fi
 fi
 {{- end }}

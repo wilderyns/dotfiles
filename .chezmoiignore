@@ -11,4 +11,5 @@ Library/Application Support/Code/**
 {{- if ne .chezmoi.os "linux" }}
 .config/Code
 .config/Code/**
+.config/dotfiles/flatpaks.txt
 {{- end }}

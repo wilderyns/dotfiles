@@ -91,7 +91,7 @@ cask 'microsoft-teams'	if OS.mac?
 cask 'microsoft-office'	if OS.mac?
 cask 'moonlight'	if OS.mac?
 cask 'obsidian'	if OS.mac?
-cask 'postman'	if OS.mac?
+cask 'bruno' if OS.mac?
 cask 'protonvpn'	if OS.mac?
 cask 'scrivener' if OS.mac?
 cask 'steam'   if OS.mac?

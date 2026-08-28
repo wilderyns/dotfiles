@@ -1,0 +1,37 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Flatpak manifest hash: {{ include "dot_config/dotfiles/flatpaks.txt" | sha256sum }}
+
+if ! command -v flatpak >/dev/null 2>&1; then
+  echo "Flatpak is not installed; skipping graphical applications."
+  exit 0
+fi
+
+manifest="$HOME/.config/dotfiles/flatpaks.txt"
+flathub_url=https://dl.flathub.org/repo/flathub.flatpakrepo
+
+if ! flatpak --system remotes --columns=name | grep -Fxq flathub; then
+  flatpak --system remote-add --if-not-exists flathub "$flathub_url"
+fi
+
+apps=()
+while IFS= read -r app_id; do
+  [[ -z "$app_id" || "$app_id" == \#* ]] && continue
+  apps+=("$app_id")
+done < "$manifest"
+
+if (( ${#apps[@]} == 0 )); then
+  echo "No Flatpak applications are configured."
+  exit 0
+fi
+
+flatpak --system install \
+  --app \
+  --assumeyes \
+  --noninteractive \
+  --or-update \
+  flathub \
+  "${apps[@]}"
+{{- end }}

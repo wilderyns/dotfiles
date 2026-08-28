@@ -31,9 +31,15 @@ chezmoi init --apply wilderyns
 
 The first apply installs Homebrew, applies the Brewfile, installs mise and Oh
 My Zsh from their official installers, installs configured mise tools and VS
-Code extensions, and applies the remaining configuration.
+Code extensions, installs the selected system Flatpaks on Linux, and applies
+the remaining configuration.
 
 On a Fedora atomic desktop, Ghostty and 1Password are layered with rpm-ostree.
 That step requests administrator authorization and requires a reboot before the
 applications become available. Non-atomic Linux intentionally skips these two
 system packages.
+
+Linux Flatpaks are listed in `.config/dotfiles/flatpaks.txt` and installed at
+system scope from Flathub. The installer adds and updates listed applications;
+it deliberately does not remove unlisted applications. Apps already supplied
+by the standard KDE Bazzite image are omitted from the manifest.

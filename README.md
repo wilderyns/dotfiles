@@ -1,7 +1,6 @@
 # Dotfiles
 
-Cross-platform dotfiles managed by [chezmoi](https://www.chezmoi.io/) for macOS
-and Fedora-derived Linux desktops, including Bazzite.
+Hello and welcome to my dotfiles, designed to work between my Mac and Bazzite installs (but should theoretically work on Fedora too), all managed by [chezmoi](https://www.chezmoi.io/).
 
 ## Daily workflow
 
@@ -34,12 +33,8 @@ My Zsh from their official installers, installs configured mise tools and VS
 Code extensions, installs the selected system Flatpaks on Linux, and applies
 the remaining configuration.
 
-On a Fedora atomic desktop, Ghostty and 1Password are layered with rpm-ostree.
-That step requests administrator authorization and requires a reboot before the
-applications become available. Non-atomic Linux intentionally skips these two
-system packages.
+On Bazzite (and other Fedora atomic distros), Ghostty and 1Password are layered with rpm-ostree. 1Password is layered to deal with inter-application communication (specifically with Firefox's 1Password extension), and Ghostty is layered because that's their recommended install method for atomic distributions.
 
 Linux Flatpaks are listed in `.config/dotfiles/flatpaks.txt` and installed at
 system scope from Flathub. The installer adds and updates listed applications;
-it deliberately does not remove unlisted applications. Apps already supplied
-by the standard KDE Bazzite image are omitted from the manifest.
+it does not remove unlisted applications.

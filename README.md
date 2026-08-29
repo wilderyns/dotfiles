@@ -18,10 +18,10 @@ atomic desktops, and Omarchy/Arch, all managed by
   - Ghostty
   - 1Password
 - flatpak:
-  - Bruno, Cider, Discord, DistroShelf
-  - Faugus, Filelight, FileZilla, Gear Lever
-  - Obsidian, Podman Desktop, Proton VPN
-  - RetroDECK, SyncThingy, Trayscale
+  - Bruno, Cider, Chromium, Discord
+  - DistroShelf, Faugus, Filelight, FileZilla
+  - Gear Lever, Obsidian, Podman Desktop
+  - Proton VPN, RetroDECK, SyncThingy, Trayscale
 - Omarchy native installation:
   - Cider through the Cider Collective pacman repository
   - Ghostty, Firefox, VS Code, and 1Password
@@ -30,7 +30,7 @@ atomic desktops, and Omarchy/Arch, all managed by
     and [hyprmoncfg](https://omarchyplugins.com/plugin.html?id=crmne.hyprmoncfg)
     Omarchy plugins
 
-## Daily workflow
+## Workflow
 
 The source directory is an ordinary Git repository, so no special editor is
 required:
@@ -50,7 +50,7 @@ managed files can also be edited in the home directory and imported with
 
 ## New machine
 
-After chezmoi is available, initialize and apply the repository:
+Install chezmoi according to the [installation instructions](https://www.chezmoi.io/install/). Then run:
 
 ```sh
 chezmoi init --apply wilderyns

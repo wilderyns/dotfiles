@@ -29,20 +29,67 @@ export EDITOR="nvim"
 export VISUAL="$EDITOR"
 alias vim="nvim"
 
-# Work on the chezmoi source with any editor, without using `chezmoi edit`.
-# Examples: `dots`, `dots nvim`, or `dots code`.
+# Work on and synchronize the chezmoi source repository.
 dots() {
-  local source_dir
+  local source_dir action commit_message
   source_dir="$(chezmoi source-path)" || return
-  if (( $# == 0 )); then
-    cd "$source_dir" || return
-  else
-    "$@" "$source_dir"
-  fi
+  action="${1:-}"
+
+  case "$action" in
+    "")
+      cd "$source_dir" || return
+      ;;
+    diff|apply|update)
+      shift
+      chezmoi "$action" "$@"
+      ;;
+    push)
+      shift
+      if (( $# != 0 )); then
+        print -u2 "Usage: dots push"
+        return 2
+      fi
+
+      # Import approved changes from managed, non-template files first.
+      chezmoi re-add --interactive || return
+      git -C "$source_dir" add -A || return
+
+      if git -C "$source_dir" diff --cached --quiet; then
+        print "No dotfile changes to commit."
+        return 0
+      fi
+
+      print "Changes to commit:"
+      git -C "$source_dir" status --short
+      git -C "$source_dir" diff --cached --stat
+      print
+
+      if ! read "commit_message?Commit message: "; then
+        print -u2 "Commit cancelled."
+        return 1
+      fi
+      if [[ -z "${commit_message//[[:space:]]/}" ]]; then
+        print -u2 "Commit message cannot be empty."
+        return 1
+      fi
+
+      git -C "$source_dir" commit -m "$commit_message" || return
+      git -C "$source_dir" push
+      ;;
+    help|-h|--help)
+      print "Usage:"
+      print "  dots                 Change to the chezmoi source directory"
+      print "  dots <editor>        Open the source directory in an editor"
+      print "  dots diff            Preview unapplied changes"
+      print "  dots apply           Apply source changes"
+      print "  dots update          Pull and apply remote changes"
+      print "  dots push            Re-add, commit, and push local changes"
+      ;;
+    *)
+      "$@" "$source_dir"
+      ;;
+  esac
 }
-alias dotapply="chezmoi apply"
-alias dotdiff="chezmoi diff"
-alias dotupdate="chezmoi update"
 
 {{- if eq .chezmoi.os "darwin" }}
 

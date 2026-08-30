@@ -20,21 +20,21 @@ Hello and welcome to my dotfiles, designed to work between my Mac and Bazzite in
 
 ## Workflow
 
-The source directory is an ordinary Git repository, so no special editor is
-required:
-
 ```sh
 dots          # change to the source directory
 dots nvim     # open the source directory in Neovim
 dots code     # open the source directory in VS Code
-dotdiff       # preview changes that would be applied
-dotapply      # apply source changes to the home directory
-dotupdate     # pull from GitHub and apply on this machine
+dots zed      # open the source directory in Zed
+dots diff     # preview changes that would be applied
+dots apply    # apply source changes to the home directory
+dots update   # pull from GitHub and apply on this machine
+dots push     # re-add managed changes, commit, and push to GitHub
 ```
 
 Edit templated files such as `dot_zshrc.tmpl` in the source directory. Plain
 managed files can also be edited in the home directory and imported with
-`chezmoi re-add <path>`.
+`chezmoi re-add <path>`. `dots push` runs this re-add step interactively before
+staging the complete source repository and asking for a commit message.
 
 ## New machine
 

@@ -30,6 +30,7 @@ cask 'android-commandlinetools' if OS.mac?
 cask 'android-ndk' if OS.mac?
 cask 'visual-studio-code' if OS.mac?
 cask 'visual-studio-code-linux' if OS.linux?
+cask 'zed' if OS.mac?
 
 # Latex document preparation
 brew 'pandoc'

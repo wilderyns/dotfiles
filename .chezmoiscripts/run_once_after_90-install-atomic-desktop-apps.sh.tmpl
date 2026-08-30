@@ -1,5 +1,4 @@
-{{- $profile := includeTemplate "platform/profile.tmpl" . -}}
-{{- if or (eq $profile "bazzite") (eq $profile "linux") -}}
+{{- if eq .chezmoi.os "linux" -}}
 #!/usr/bin/env bash
 set -euo pipefail
 

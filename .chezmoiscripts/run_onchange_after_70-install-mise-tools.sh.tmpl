@@ -4,11 +4,8 @@ set -euo pipefail
 
 # mise config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
 
-if [[ -x "$HOME/.local/bin/mise" ]]; then
-  mise_bin="$HOME/.local/bin/mise"
-elif command -v mise >/dev/null 2>&1; then
-  mise_bin="$(command -v mise)"
-else
+mise_bin="$HOME/.local/bin/mise"
+if [[ ! -x "$mise_bin" ]]; then
   echo "mise is not installed; skipping configured tools." >&2
   exit 1
 fi

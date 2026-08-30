@@ -1,30 +1,12 @@
-{{- $profile := includeTemplate "platform/profile.tmpl" . }}
-
 # Finder metadata and generated application state.
 **/.DS_Store
 .config/nvim/pack/**
 README.md
 
-# Omarchy owns its shell, prompt, terminal theming, and LazyVim setup. Keep
-# those intact while still applying the shared mise, Git, SSH, and editor config.
-{{- if eq $profile "arch" }}
-Brewfile
-.zprofile
-.zshrc
-.config/nvim
-.config/nvim/**
-.config/ghostty
-.config/ghostty/**
-.config/starship.toml
-.config/dotfiles/flatpaks.txt
-.config/plasma-workspace
-.config/plasma-workspace/**
-{{- end }}
-
 # VS Code stores user settings in different locations on macOS and Linux.
 {{- if ne .chezmoi.os "darwin" }}
-Library
-Library/**
+Library/Application Support/Code
+Library/Application Support/Code/**
 {{- end }}
 {{- if ne .chezmoi.os "linux" }}
 .config/Code

@@ -96,7 +96,6 @@ cask 'github' if OS.mac?
 cask 'google-chrome'	if OS.mac?
 cask 'google-drive'	if OS.mac?
 cask 'ghostty'	if OS.mac?
-cask 'jagex'  if OS.mac?
 cask 'microsoft-teams'	if OS.mac?
 cask 'microsoft-office'	if OS.mac?
 cask 'moonlight'	if OS.mac?

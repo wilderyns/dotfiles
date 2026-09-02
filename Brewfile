@@ -53,6 +53,8 @@ brew 'git'
 brew 'gh'
 brew 'lazygit'
 brew 'make'
+# Installing just on mac, already included in Bazzite and Silverblue derivatives
+brew 'just' if OS.mac?
 # Homebrew's `telnet` formula is macOS-only. GNU inetutils provides the
 # `telnet` command on Linux.
 brew 'telnet' if OS.mac?
@@ -100,6 +102,7 @@ cask 'moonlight'	if OS.mac?
 cask 'obsidian'	if OS.mac?
 cask 'bruno' if OS.mac?
 cask 'protonvpn'	if OS.mac?
+cask 'runelite'   if OS.mac?
 cask 'scrivener' if OS.mac?
 cask 'steam'   if OS.mac?
 cask 'syncthing-app'   if OS.mac?

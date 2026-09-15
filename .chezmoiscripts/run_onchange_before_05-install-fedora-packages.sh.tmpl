@@ -1,0 +1,141 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# DNF manifest hash: {{ include "dot_config/dotfiles/dnf-packages.txt" | sha256sum }}
+
+if [[ ! -r /etc/os-release ]]; then
+  echo "Cannot identify this Linux distribution; skipping Fedora packages." >&2
+  exit 0
+fi
+
+# shellcheck disable=SC1091
+. /etc/os-release
+if [[ "${ID:-}" != "fedora" ]]; then
+  echo "This is not standard Fedora; skipping DNF package installation."
+  exit 0
+fi
+
+if ! command -v dnf >/dev/null 2>&1; then
+  echo "Fedora was detected, but dnf is unavailable." >&2
+  exit 1
+fi
+
+manifest={{ joinPath .chezmoi.sourceDir "dot_config/dotfiles/dnf-packages.txt" | quote }}
+install_1password=false
+install_code=false
+install_docker=false
+install_ghostty=false
+install_proton=false
+install_sunshine=false
+packages=()
+third_party_packages=()
+
+while IFS= read -r package; do
+  [[ -z "$package" || "$package" == \#* ]] && continue
+  case "$package" in
+    1password)
+      install_1password=true
+      third_party_packages+=("$package")
+      ;;
+    code)
+      install_code=true
+      third_party_packages+=("$package")
+      ;;
+    containerd.io|docker-buildx-plugin|docker-ce|docker-ce-cli|docker-compose-plugin)
+      install_docker=true
+      third_party_packages+=("$package")
+      ;;
+    ghostty)
+      install_ghostty=true
+      third_party_packages+=("$package")
+      ;;
+    proton-vpn-gnome-desktop)
+      install_proton=true
+      third_party_packages+=("$package")
+      ;;
+    Sunshine)
+      install_sunshine=true
+      third_party_packages+=("$package")
+      ;;
+    *)
+      packages+=("$package")
+      ;;
+  esac
+done < "$manifest"
+
+if (( ${#packages[@]} > 0 )); then
+  sudo dnf install -y "${packages[@]}"
+fi
+
+fedora_version="${VERSION_ID%%.*}"
+
+if [[ "$install_1password" == true ]]; then
+  sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+
+  if [[ ! -f /etc/yum.repos.d/1password.repo ]]; then
+    tmp_repo="$(mktemp)"
+    cat > "$tmp_repo" <<'EOF'
+[1password]
+name=1Password Stable Channel
+baseurl=https://downloads.1password.com/linux/rpm/stable/$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://downloads.1password.com/linux/keys/1password.asc
+EOF
+    sudo install -m 0644 "$tmp_repo" /etc/yum.repos.d/1password.repo
+    rm -f "$tmp_repo"
+  fi
+fi
+
+if [[ "$install_code" == true && ! -f /etc/yum.repos.d/vscode.repo ]]; then
+  sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+  tmp_repo="$(mktemp)"
+  cat > "$tmp_repo" <<'EOF'
+[code]
+name=Visual Studio Code
+baseurl=https://packages.microsoft.com/yumrepos/vscode
+enabled=1
+autorefresh=1
+type=rpm-md
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+EOF
+  sudo install -m 0644 "$tmp_repo" /etc/yum.repos.d/vscode.repo
+  rm -f "$tmp_repo"
+fi
+
+if [[ "$install_docker" == true && ! -f /etc/yum.repos.d/docker-ce.repo ]]; then
+  sudo dnf config-manager addrepo \
+    --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
+fi
+
+if [[ "$install_ghostty" == true ]] && \
+  ! dnf repolist --enabled | grep -Fq copr:copr.fedorainfracloud.org:scottames:ghostty; then
+  sudo dnf copr enable -y scottames/ghostty
+fi
+
+if [[ "$install_sunshine" == true ]] && \
+  ! dnf repolist --enabled | grep -Fq copr:copr.fedorainfracloud.org:lizardbyte:beta; then
+  sudo dnf copr enable -y lizardbyte/beta
+fi
+
+if [[ "$install_proton" == true ]] && ! rpm -q protonvpn-stable-release >/dev/null 2>&1; then
+  proton_repo_rpm="$(mktemp --suffix=.rpm)"
+  trap 'rm -f "$proton_repo_rpm"' EXIT
+
+  curl -fsSL \
+    "https://repo.protonvpn.com/fedora-${fedora_version}-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.4-1.noarch.rpm" \
+    -o "$proton_repo_rpm"
+  sudo dnf install -y "$proton_repo_rpm"
+fi
+
+if (( ${#third_party_packages[@]} > 0 )); then
+  sudo dnf install -y "${third_party_packages[@]}"
+fi
+
+if [[ "$install_docker" == true ]]; then
+  sudo systemctl enable --now docker
+fi
+{{- end }}

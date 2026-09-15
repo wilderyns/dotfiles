@@ -1,8 +1,5 @@
-# Dotfile syncing
+# macOS packages and applications
 brew 'chezmoi'
-
-# Universal Blue provides Linux desktop casks used on Bazzite.
-tap 'ublue-os/tap' if OS.linux?
 
 ### Dev tools and languages ###
 brew 'php'
@@ -22,14 +19,11 @@ brew 'openvpn'
 brew 'opentofu'
 brew 'docker'
 brew 'docker-compose'
-brew 'podman' if OS.linux?
-brew 'podman-compose' if OS.linux?
 # CocoaPods is also managed by Mise through its gem backend.
 cask 'android-platform-tools' if OS.mac?
 cask 'android-commandlinetools' if OS.mac?
 cask 'android-ndk' if OS.mac?
 cask 'visual-studio-code' if OS.mac?
-cask 'visual-studio-code-linux' if OS.linux?
 cask 'zed' if OS.mac?
 
 # Latex document preparation
@@ -53,18 +47,15 @@ brew 'git'
 brew 'gh'
 brew 'lazygit'
 brew 'make'
-# Installing just on mac, already included in Bazzite and Silverblue derivatives
+# Homebrew is only applied on macOS.
 brew 'just' if OS.mac?
-# Homebrew's `telnet` formula is macOS-only. GNU inetutils provides the
-# `telnet` command on Linux.
 brew 'telnet' if OS.mac?
-brew 'inetutils' if OS.linux?
 brew 'gpg'
 brew 'gawk'
 brew 'mkcert'
 brew 'ripgrep'
 brew 'fd'
-# The upstream cask ships native macOS and Linux binaries.
+# Install the native macOS Codex application.
 cask 'codex'
 # Neovim/Mason manages tree-sitter-cli and language servers such as vtsls.
 
@@ -119,6 +110,7 @@ cask 'zotero' if OS.mac?
 
 # Fonts
 cask 'font-anonymous-pro' if OS.mac?
+cask 'font-caskaydia-cove-nerd-font' if OS.mac?
 cask 'font-fira-code-nerd-font' if OS.mac?
 cask 'font-fira-code' if OS.mac?
 cask 'font-fira-mono-for-powerline' if OS.mac?
@@ -127,8 +119,11 @@ cask 'font-fira-mono' if OS.mac?
 cask 'font-hack-nerd-font' if OS.mac?
 cask 'font-hack' if OS.mac?
 cask 'font-inconsolata' if OS.mac?
+cask 'font-iosevka-nerd-font' if OS.mac?
 cask 'font-jetbrains-mono-nerd-font' if OS.mac?
 cask 'font-jetbrains-mono' if OS.mac?
+cask 'font-juliamono' if OS.mac?
+cask 'font-maple-mono-nf' if OS.mac?
 cask 'font-monaspace' if OS.mac?
 cask 'font-monaspace-nf' if OS.mac?
 cask 'font-nunito' if OS.mac?

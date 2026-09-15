@@ -1,0 +1,11 @@
+# Nerd Fonts release archive names
+AnonymousPro
+CascadiaCode
+FiraCode
+FiraMono
+Hack
+Inconsolata
+Iosevka
+JetBrainsMono
+Monaspace
+SourceCodePro

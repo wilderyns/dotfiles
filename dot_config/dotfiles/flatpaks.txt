@@ -1,19 +1,15 @@
 # Flatpak application list
+com.adamcake.Bolt
+com.obsproject.Studio
+org.libreoffice.LibreOffice
 com.discordapp.Discord
 com.github.zocker_160.SyncThingy
-com.protonvpn.www
-com.ranfdev.DistroShelf
 com.usebruno.Bruno
 dev.deedles.Trayscale
-io.edcd.EDMarketConnector
 io.github.Faugus.faugus-launcher
-io.podman_desktop.PodmanDesktop
 it.mijorus.gearlever
 md.obsidian.Obsidian
 net.retrodeck.retrodeck
 org.desktop_plus.desktop-plus
 org.filezillaproject.Filezilla
-org.kde.filelight
 sh.cider.Cider
-org.chromium.Chromium
-org.mozilla.firefox

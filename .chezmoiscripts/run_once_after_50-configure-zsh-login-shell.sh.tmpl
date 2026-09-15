@@ -5,9 +5,7 @@ set -euo pipefail
 {{- if eq .chezmoi.os "darwin" }}
 desired_shell=/bin/zsh
 {{- else }}
-if [[ -x /home/linuxbrew/.linuxbrew/bin/zsh ]]; then
-  desired_shell=/home/linuxbrew/.linuxbrew/bin/zsh
-elif command -v zsh >/dev/null 2>&1; then
+if command -v zsh >/dev/null 2>&1; then
   desired_shell="$(command -v zsh)"
 else
   echo "zsh is not installed; cannot set the login shell." >&2

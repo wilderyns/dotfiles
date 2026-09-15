@@ -1,0 +1,16 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v zed >/dev/null 2>&1 || [[ -x "$HOME/.local/bin/zed" ]]; then
+  echo "Zed is already installed."
+  exit 0
+fi
+
+curl -fsSL https://zed.dev/install.sh | sh
+
+if [[ ! -x "$HOME/.local/bin/zed" ]]; then
+  echo "Zed installation did not create $HOME/.local/bin/zed." >&2
+  exit 1
+fi
+{{- end }}

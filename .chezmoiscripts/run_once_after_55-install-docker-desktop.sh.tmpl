@@ -1,0 +1,34 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ ! -r /etc/os-release ]]; then
+  echo "Cannot identify this Linux distribution; skipping Docker Desktop." >&2
+  exit 0
+fi
+
+# shellcheck disable=SC1091
+. /etc/os-release
+if [[ "${ID:-}" != "fedora" ]]; then
+  echo "This is not standard Fedora; skipping Docker Desktop."
+  exit 0
+fi
+
+if [[ "$(uname -m)" != "x86_64" ]]; then
+  echo "Docker Desktop's Fedora RPM is only available for x86_64; skipping installation." >&2
+  exit 0
+fi
+
+if ! rpm -q docker-desktop >/dev/null 2>&1; then
+  desktop_rpm="$(mktemp --suffix=.rpm)"
+  trap 'rm -f "$desktop_rpm"' EXIT
+  curl -fsSL \
+    https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm \
+    -o "$desktop_rpm"
+  sudo dnf install -y "$desktop_rpm"
+fi
+
+# Starting Docker Desktop is left to an interactive launch, where its
+# subscription agreement can be accepted. It is intentionally not enabled at
+# login because Docker Engine is already enabled as the default daemon.
+{{- end }}

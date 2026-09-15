@@ -12,6 +12,8 @@ Library/Application Support/Code/**
 .config/Code
 .config/Code/**
 .config/dotfiles/flatpaks.txt
+.config/dotfiles/dnf-packages.txt
+.config/dotfiles/nerd-fonts.txt
 .config/environment.d
 .config/environment.d/**
 {{- end }}

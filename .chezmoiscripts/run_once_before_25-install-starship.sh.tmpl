@@ -1,0 +1,18 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v starship >/dev/null 2>&1 || [[ -x "$HOME/.local/bin/starship" ]]; then
+  echo "Starship is already installed."
+  exit 0
+fi
+
+mkdir -p "$HOME/.local/bin"
+curl -sS https://starship.rs/install.sh | \
+  sh -s -- -y -b "$HOME/.local/bin"
+
+if [[ ! -x "$HOME/.local/bin/starship" ]]; then
+  echo "Starship installation did not create $HOME/.local/bin/starship." >&2
+  exit 1
+fi
+{{- end }}

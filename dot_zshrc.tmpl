@@ -1,20 +1,16 @@
 # Keep user-installed tools available before initializing shell integrations.
 export PATH="$HOME/.local/bin:$PATH"
 
-# GUI-launched terminals do not always inherit the login-shell Homebrew PATH.
-if (( ! $+commands[brew] )); then
 {{- if eq .chezmoi.os "darwin" }}
+# GUI-launched macOS terminals do not always inherit the login-shell Homebrew PATH.
+if (( ! $+commands[brew] )); then
   if [[ -x /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
   elif [[ -x /usr/local/bin/brew ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
   fi
-{{- else if eq .chezmoi.os "linux" }}
-  if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  fi
-{{- end }}
 fi
+{{- end }}
 
 # Oh My Zsh provides plugins and shell conveniences. Starship owns the prompt.
 export ZSH="$HOME/.oh-my-zsh"
@@ -105,7 +101,15 @@ if [[ -x "$HOME/.local/bin/mise" ]]; then
   eval "$("$HOME/.local/bin/mise" activate zsh)"
 fi
 
-# Starship is installed by Homebrew on both macOS and Linux.
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+fi
+
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
+
+# Starship is installed by the platform package manager when available.
 if (( $+commands[starship] )); then
   eval "$(starship init zsh)"
 fi

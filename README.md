@@ -1,22 +1,23 @@
 # Dotfiles
 
-Hello and welcome to my dotfiles, designed to work between my Mac and Bazzite installs (but should theoretically work on Fedora too), all managed by [chezmoi](https://www.chezmoi.io/).
+Hello and welcome to my dotfiles, designed to work between macOS and standard Fedora, all managed by [chezmoi](https://www.chezmoi.io/).
 
 ## What's Included
 
 - [mise](https://github.com/jdx/mise): manages language versions, with the global `mise.toml` providing Ruby (with rails, debug, foreman, htmlbeautifier, ruby-lsp, solargraph, and standard) Go, Flutter, Java (temurin), Python, Node (with Yarn), and Rust. All at their latest versions.
 - [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - [starship](https://github.com/starship/starship): with [catppuccin](https://github.com/catppuccin/nvim) theme.
-- [homebrew](https://github.com/Homebrew): a number of formulas and casks, see [Brewfile](https://github.com/wilderyns/dotfiles/blob/main/Brewfile)
+- [homebrew](https://github.com/Homebrew): macOS formulas and casks, see [Brewfile](https://github.com/wilderyns/dotfiles/blob/main/Brewfile)
 - [astronvim](https://github.com/AstroNvim/AstroNvim)
-- rpm-ostree (bazzite and atomic distros):
-  - Ghostty
-  - 1Password
+- dnf (Fedora):
+  - 1Password, Docker Engine, Ghostty, Sunshine, VS Code, Chromium, Firefox, Proton VPN, Neovim, and Zsh
+  - Bat, btop, eza, fastfetch, fd, fzf, ripgrep, tldr, yt-dlp, and zoxide
+- additional Fedora tools:
+  - Docker Desktop, Zed, Starship, LazyGit, LazyDocker, Oh My Zsh, and Nerd Fonts
 - flatpak:
-  - Bruno, Cider, Chromium, Discord
-  - DistroShelf, Faugus, Filelight, FileZilla
-  - Gear Lever, Obsidian, Podman Desktop
-  - Proton VPN, RetroDECK, SyncThingy, Trayscale
+  - Bolt, Bruno, Cider, Discord, Faugus, FileZilla
+  - Gear Lever, LibreOffice, OBS Studio, Obsidian
+  - RetroDECK, SyncThingy, Trayscale, and desktop-plus
 
 ## Workflow
 
@@ -44,16 +45,20 @@ Install chezmoi according to the [installation instructions](https://www.chezmoi
 chezmoi init --apply wilderyns
 ```
 
-The first apply installs Homebrew, applies the Brewfile, installs mise and Oh
-My Zsh from their official installers, installs configured mise tools and VS
-Code extensions, installs the selected system Flatpaks on Linux, and applies
-the remaining configuration.
+On macOS, the first apply installs Homebrew and applies the Brewfile. On Fedora,
+it installs the packages in `.config/dotfiles/dnf-packages.txt`, configuring
+the required 1Password, Docker, Ghostty, Proton VPN, Sunshine, and VS Code repositories first. Fedora
+also installs Docker Desktop, multimedia codecs, archive tools, Zed and Starship
+from their official installers, the configured Nerd Fonts, and LazyGit and
+LazyDocker through mise. Both platforms install mise and Oh My Zsh from their
+official installers, configured mise tools, VS Code extensions, and the
+remaining configuration. Iosevka Nerd Font is selected in Ghostty, Zed,
+and VS Code.
 
-On Bazzite (and other Fedora atomic distros), Ghostty and 1Password are layered with rpm-ostree. 1Password is layered to deal with inter-application communication (specifically with Firefox's 1Password extension), and Ghostty is layered because that's their recommended install method for atomic distributions.
+Docker Engine starts automatically on Fedora. Docker Desktop is installed as an
+optional alternative but is not enabled at login, so it can be launched manually
+without routinely running both daemons together.
 
 Linux Flatpaks are listed in `.config/dotfiles/flatpaks.txt` and installed at
 system scope from Flathub. The installer adds and updates listed applications;
-it does not remove unlisted applications. The extra application-menu workaround
-is restricted to Bazzite Plasma: its persistent environment hook is only
-rendered on Bazzite and is only loaded by Plasma, while the immediate Plasma
-cache refresh also verifies the active desktop session before it runs.
+it does not remove unlisted applications.

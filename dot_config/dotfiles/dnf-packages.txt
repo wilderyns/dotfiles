@@ -1,0 +1,35 @@
+# Fedora repository packages
+bat
+btop
+chromium
+curl
+dnf-plugins-core
+eza
+fastfetch
+fd-find
+firefox
+flatpak
+fontconfig
+fzf
+git
+just
+make
+neovim
+proton-vpn-gnome-desktop
+python3-dnf
+ripgrep
+tldr
+yt-dlp
+zoxide
+zsh
+
+# Packages from repositories configured by the installer
+1password
+code
+containerd.io
+docker-buildx-plugin
+docker-ce
+docker-ce-cli
+docker-compose-plugin
+ghostty
+Sunshine

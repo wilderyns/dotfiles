@@ -1,0 +1,56 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Nerd Font manifest hash: {{ include "dot_config/dotfiles/nerd-fonts.txt" | sha256sum }}
+
+manifest={{ joinPath .chezmoi.sourceDir "dot_config/dotfiles/nerd-fonts.txt" | quote }}
+work_dir="$(mktemp -d)"
+installer="$work_dir/nerd-fonts-install.sh"
+fonts_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts"
+trap 'rm -rf "$work_dir"' EXIT
+
+curl -fsSL \
+  https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh \
+  -o "$installer"
+chmod u+x "$installer"
+
+while IFS= read -r font; do
+  [[ -z "$font" || "$font" == \#* ]] && continue
+  "$installer" install "$font"
+done < "$manifest"
+
+install_font_archive() {
+  local archive_name="$1"
+  local url="$2"
+  local archive="$work_dir/${archive_name}.zip"
+  local extracted="$work_dir/${archive_name}"
+  local destination="$fonts_dir/$archive_name"
+  local installed=false
+
+  curl -fsSL "$url" -o "$archive"
+  mkdir -p "$extracted" "$destination"
+  unzip -q -o "$archive" -d "$extracted"
+
+  while IFS= read -r -d '' font_file; do
+    install -m 0644 "$font_file" "$destination/"
+    installed=true
+  done < <(find "$extracted" -type f \( -iname '*.otf' -o -iname '*.ttf' \) -print0)
+
+  if [[ "$installed" != true ]]; then
+    echo "No font files found in the $archive_name archive." >&2
+    return 1
+  fi
+}
+
+install_font_archive \
+  JuliaMono \
+  https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono-ttf.zip
+install_font_archive \
+  MapleMono-NF \
+  https://github.com/subframe7536/maple-font/releases/latest/download/MapleMono-NF.zip
+
+if command -v fc-cache >/dev/null 2>&1; then
+  fc-cache -f
+fi
+{{- end }}

@@ -1,1 +1,2 @@
 .config/environment.d/20-flatpak.conf
+.config/plasma-workspace/env/20-flatpak.sh

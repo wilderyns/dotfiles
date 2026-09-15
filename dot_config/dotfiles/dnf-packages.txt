@@ -23,6 +23,7 @@ python3-bcc
 python3-dnf
 rclone
 ripgrep
+thunderbird
 tldr
 yt-dlp
 zoxide

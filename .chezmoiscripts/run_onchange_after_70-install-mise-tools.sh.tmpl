@@ -10,5 +10,9 @@ if [[ ! -x "$mise_bin" ]]; then
   exit 1
 fi
 
+# Gem post-install hooks invoke `mise reshim` by name, so mise itself must be
+# available on PATH even though this script invokes it by absolute path.
+export PATH="$(dirname "$mise_bin"):$PATH"
+
 "$mise_bin" install --yes
 {{- end }}

@@ -11,7 +11,7 @@ Hello and welcome to my dotfiles, designed to work between macOS and standard Fe
 - [astronvim](https://github.com/AstroNvim/AstroNvim)
 - dnf (Fedora):
   - 1Password, Docker Engine, Ghostty, Sunshine, VS Code, Chromium, Firefox, Proton VPN, Neovim, and Zsh
-  - Bat, btop, eza, fastfetch, fd, fzf, ripgrep, tldr, yt-dlp, and zoxide
+  - Bat, btop, eza, fastfetch, fd, fzf, GitHub CLI, ripgrep, tldr, yt-dlp, and zoxide
 - additional Fedora tools:
   - Docker Desktop, Zed, Starship, LazyGit, LazyDocker, Oh My Zsh, and Nerd Fonts
 - flatpak:

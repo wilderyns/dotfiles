@@ -11,6 +11,7 @@ firefox
 flatpak
 fontconfig
 fzf
+gh
 git
 just
 make

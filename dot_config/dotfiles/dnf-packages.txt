@@ -17,6 +17,8 @@ just
 make
 neovim
 proton-vpn-gnome-desktop
+# Preload the Proton daemon's BCC stack before its RPM script starts the service.
+python3-bcc
 python3-dnf
 ripgrep
 tldr

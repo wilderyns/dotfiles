@@ -1,0 +1,18 @@
+[Unit]
+Description=Mount iCloud Drive with rclone
+Documentation=https://rclone.org/iclouddrive/
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=%h/.config/rclone/rclone.conf
+
+[Service]
+Type=notify
+ExecStartPre=/usr/bin/mkdir -p %h/iCloud
+ExecStart=/usr/bin/rclone mount --config=%h/.config/rclone/rclone.conf --cache-dir=%h/.cache/rclone --vfs-cache-mode=full --dir-cache-time=5m --umask=077 icloud: %h/iCloud
+ExecStop=-/usr/bin/fusermount3 -u %h/iCloud
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=20
+
+[Install]
+WantedBy=default.target

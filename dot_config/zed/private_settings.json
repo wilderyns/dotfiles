@@ -50,14 +50,14 @@
   "session": {
     "trust_all_worktrees": false
   },
-  "ui_font_family": "Iosevka Nerd Font",
-  "buffer_font_family": "Iosevka Nerd Font",
-  "agent_ui_font_family": "Iosevka Nerd Font",
-  "agent_buffer_font_family": "Iosevka Nerd Font",
+  "ui_font_family": "Maple Mono NF",
+  "buffer_font_family": "Maple Mono NF",
+  "agent_ui_font_family": "Maple Mono NF",
+  "agent_buffer_font_family": "Maple Mono NF",
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "terminal": {
-    "font_family": "Iosevka Nerd Font"
+    "font_family": "Maple Mono NF"
   },
   "theme": "Catppuccin Frappé",
 }

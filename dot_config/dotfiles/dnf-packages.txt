@@ -10,6 +10,7 @@ fd-find
 firefox
 flatpak
 fontconfig
+fuse3
 fzf
 gh
 git
@@ -20,6 +21,7 @@ proton-vpn-gnome-desktop
 # Preload the Proton daemon's BCC stack before its RPM script starts the service.
 python3-bcc
 python3-dnf
+rclone
 ripgrep
 tldr
 yt-dlp

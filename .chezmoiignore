@@ -16,4 +16,6 @@ Library/Application Support/Code/**
 .config/dotfiles/nerd-fonts.txt
 .config/environment.d
 .config/environment.d/**
+.config/systemd
+.config/systemd/**
 {{- end }}

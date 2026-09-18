@@ -88,10 +88,10 @@ cask 'google-chrome'	if OS.mac?
 cask 'google-drive'	if OS.mac?
 cask 'ghostty'	if OS.mac?
 cask 'microsoft-teams'	if OS.mac?
-cask 'microsoft-office'	if OS.mac?
 cask 'moonlight'	if OS.mac?
 cask 'obsidian'	if OS.mac?
 cask 'bruno' if OS.mac?
+Cask 'libreoffice' if OS.mac? #replaced Microsoft Office 
 cask 'protonvpn'	if OS.mac?
 cask 'runelite'   if OS.mac?
 cask 'scrivener' if OS.mac?

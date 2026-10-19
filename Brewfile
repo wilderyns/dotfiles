@@ -1,6 +1,13 @@
 # macOS packages and applications
 brew 'chezmoi'
 
+# Runescape!
+cask 'jagex'
+
+# Deskflow
+tap 'deskflow/tap'
+cask 'deskflow'
+
 ### Dev tools and languages ###
 brew 'php'
 cask 'jamovi' if OS.mac?
@@ -19,6 +26,7 @@ brew 'openvpn'
 brew 'opentofu'
 brew 'docker'
 brew 'docker-compose'
+
 # CocoaPods is also managed by Mise through its gem backend.
 cask 'android-platform-tools' if OS.mac?
 cask 'android-commandlinetools' if OS.mac?
@@ -43,11 +51,11 @@ brew 'gnu-tar'
 brew 'gzip'
 cask 'godot' if OS.mac?
 brew 'neovim'
+# Neovim/Mason manages tree-sitter-cli and language servers such as vtsls.
 brew 'git'
 brew 'gh'
 brew 'lazygit'
 brew 'make'
-# Homebrew is only applied on macOS.
 brew 'just' if OS.mac?
 brew 'telnet' if OS.mac?
 brew 'gpg'
@@ -55,9 +63,9 @@ brew 'gawk'
 brew 'mkcert'
 brew 'ripgrep'
 brew 'fd'
+
 # Install the native macOS Codex application.
-cask 'codex'
-# Neovim/Mason manages tree-sitter-cli and language servers such as vtsls.
+cask 'codex' if OS.mac?
 
 # Web dev projects
 brew 'mysql'
@@ -77,11 +85,11 @@ cask 'appcleaner'	if OS.mac?
 cask 'balenaetcher'	if OS.mac?
 cask 'chatgpt'	if OS.mac?
 cask 'docker-desktop'	if OS.mac?
+# TODO: Replace with Dockhand container
 cask 'daisydisk'	if OS.mac?
 cask 'discord'	if OS.mac?
 cask 'cyberduck'	if OS.mac?
 cask 'firefox'	if OS.mac?
-cask 'chromium'	if OS.mac?
 cask 'gcloud-cli'	if OS.mac?
 cask 'github' if OS.mac?
 cask 'google-chrome'	if OS.mac?
@@ -91,7 +99,7 @@ cask 'microsoft-teams'	if OS.mac?
 cask 'moonlight'	if OS.mac?
 cask 'obsidian'	if OS.mac?
 cask 'bruno' if OS.mac?
-Cask 'libreoffice' if OS.mac? #replaced Microsoft Office 
+cask 'libreoffice' if OS.mac? #replaced Microsoft Office 
 cask 'protonvpn'	if OS.mac?
 cask 'runelite'   if OS.mac?
 cask 'scrivener' if OS.mac?

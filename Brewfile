@@ -2,11 +2,14 @@
 brew 'chezmoi'
 
 # Runescape!
-cask 'jagex'
+cask 'jagex' if OS.mac?
+
+# Really good mac disk cleanup
+brew 'mole' if OS.mac?
 
 # Deskflow
-tap 'deskflow/tap'
-cask 'deskflow'
+tap 'deskflow/tap' if OS.mac?
+cask 'deskflow' if OS.mac?
 
 ### Dev tools and languages ###
 brew 'php'

@@ -4,6 +4,10 @@ brew 'chezmoi'
 # Runescape!
 cask 'jagex' if OS.mac?
 
+# Battle.net
+# cask 'battle-net' if OS.mac?
+# Pretty useless cask, better off manually installing 
+
 # Really good mac disk cleanup
 brew 'mole' if OS.mac?
 

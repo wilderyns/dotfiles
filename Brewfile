@@ -101,7 +101,8 @@ cask 'firefox'	if OS.mac?
 cask 'gcloud-cli'	if OS.mac?
 cask 'github' if OS.mac?
 cask 'google-chrome'	if OS.mac?
-cask 'google-drive'	if OS.mac?
+# Moving away from Google Drive, never use it
+# cask 'google-drive'	if OS.mac?
 cask 'ghostty'	if OS.mac?
 cask 'microsoft-teams'	if OS.mac?
 cask 'moonlight'	if OS.mac?

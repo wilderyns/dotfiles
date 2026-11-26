@@ -7,6 +7,7 @@ cask 'jagex' if OS.mac?
 # Battle.net
 # cask 'battle-net' if OS.mac?
 # Pretty useless cask, better off manually installing
+cask 'curseforge' if OS.mac?
 
 # Really good mac disk cleanup
 brew 'mole' if OS.mac?
@@ -76,6 +77,7 @@ cask 'codex' if OS.mac?
 # Web dev projects
 brew 'mysql'
 brew 'postgresql@18'
+cask 'db-browser-for-sqlite' if OS.mac?
 cask 'pgadmin4' if OS.mac?
 brew 'redis'
 

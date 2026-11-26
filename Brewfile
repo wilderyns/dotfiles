@@ -6,7 +6,7 @@ cask 'jagex' if OS.mac?
 
 # Battle.net
 # cask 'battle-net' if OS.mac?
-# Pretty useless cask, better off manually installing 
+# Pretty useless cask, better off manually installing
 
 # Really good mac disk cleanup
 brew 'mole' if OS.mac?
@@ -38,7 +38,6 @@ brew 'docker-compose'
 cask 'android-platform-tools' if OS.mac?
 cask 'android-commandlinetools' if OS.mac?
 cask 'android-ndk' if OS.mac?
-cask 'visual-studio-code' if OS.mac?
 cask 'zed' if OS.mac?
 
 # Latex document preparation
@@ -77,7 +76,6 @@ cask 'codex' if OS.mac?
 # Web dev projects
 brew 'mysql'
 brew 'postgresql@18'
-cask 'postgres-app' if OS.mac?
 cask 'pgadmin4' if OS.mac?
 brew 'redis'
 
@@ -96,6 +94,7 @@ cask 'docker-desktop'	if OS.mac?
 cask 'daisydisk'	if OS.mac?
 cask 'discord'	if OS.mac?
 cask 'cyberduck'	if OS.mac?
+cask 'mongodb-compass' if OS.mac?
 cask 'firefox'	if OS.mac?
 cask 'gcloud-cli'	if OS.mac?
 cask 'github' if OS.mac?
@@ -106,7 +105,7 @@ cask 'microsoft-teams'	if OS.mac?
 cask 'moonlight'	if OS.mac?
 cask 'obsidian'	if OS.mac?
 cask 'bruno' if OS.mac?
-cask 'libreoffice' if OS.mac? #replaced Microsoft Office 
+cask 'libreoffice' if OS.mac? #replaced Microsoft Office
 cask 'protonvpn'	if OS.mac?
 cask 'runelite'   if OS.mac?
 cask 'scrivener' if OS.mac?
@@ -150,108 +149,42 @@ cask 'font-dejavu' if OS.mac?
 cask 'font-liberation' if OS.mac?
 
 ### Pentesting and cybersecurity tools ###
-brew 'aircrack-ng'
-brew 'amass'
-brew 'arp-scan'
-brew 'arping'
-brew 'arjun'
-brew 'bettercap'
-brew 'cadaver'
-brew 'crunch'
-brew 'ettercap'
-brew 'feroxbuster'
-brew 'ffuf'
-brew 'fierce'
-brew 'gobuster'
-brew 'hashcat'
-brew 'hydra'
-brew 'nikto'
-brew 'john'
-# Homebrew's macchanger formula is a macOS implementation.
-brew 'macchanger' if OS.mac?
-brew 'masscan'
-brew 'medusa'
+## Network Testing
 brew 'nmap'
-brew 'netcat'
-brew 'nuclei'
-brew 'reaver'
-brew 'recon-ng'
-brew 'sherlock'
-brew 'snort'
-brew 'sqlmap'
-brew 'subfinder'
-brew 'sslscan'
 brew 'tcpdump'
-brew 'socat'
-brew 'testdisk'
-brew 'theharvester'
-brew 'yara'
-cask 'burp-suite' if OS.mac?
-cask 'caido' if OS.mac?
-# cask 'metasploit' has been deprecated as of 01/09/2026
-cask 'mitmproxy' if OS.mac?
 brew 'wireshark'
 cask 'wireshark-app' if OS.mac?
+brew 'netcat'
 
-### Cybersecurity tools unavailable
-# cask 'maltego' requires Rosetta on Mac and we're not dealing with that
-# dirb
-# sharphound
-# sqlsus
-# set
-# sara
-# rubeus
-# assetfinder
-# armitage
-# spike
-# wfuzz
-# wapiti
-# wafw00f
-# airgeddon
-# evil-winrm
-# wifipumpkin3
-# tiger
-# hash-identifier
-# eyewitness
-# emailharvester
-# dvwa
-# chirp
-# bully
-# sqlninja
-# smtp-user-enum
-# bed
-# nuclei
-# dnsrecon
-# dmitry
-# crackmapexec
-# cewl
-# bloodyad
-# wpcscan
-# dirsearch
-# dirbuster
-# stegosuite
-# wifiphisher
-# websploit
-# legion
-# netexec
-# dnsenum
-# mimikatz
-# dnschef
-# impacket-scripts
-# whatweb
-# cowpatty
-# hping3
-# autopsy
-# responder
-# beef-xss
-# steghide
-# spiderfoot
-# sublist3r
-# mitm6
-# fern-wifi-cracker
-# xsser
-# scapy
-# netdiscover
+## Web content discovery
+brew 'ffuf'
+brew 'feroxbuster'
+brew 'gobuster'
+
+## Subdomains & OSINT
+brew 'subfinder'
+brew 'amass'
+
+## Username OSINT
+brew 'sherlock'
+
+## Web scanning
+brew 'nuclei'
+brew 'sqlmap'
+
+## Interception
+cask 'burp-suite' if OS.mac?
+
+## Password testing
+brew 'netcat'
+brew 'john'
+brew 'hydra'
+
+## Tools
+brew 'cadaver'
+brew 'crunch'
+brew 'socat'
+brew 'macchanger' if OS.mac?
 
 ### App store apps that you can install with the 'mas' tool ###
 ### You'll need to sign in to the App Store first before running the script. ###

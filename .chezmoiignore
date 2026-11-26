@@ -3,6 +3,13 @@
 .config/nvim/pack/**
 README.md
 
+{{- if ne .chezmoi.os "darwin" }}
+.docker
+.docker/cli-plugins
+.docker/cli-plugins/docker-buildx
+.docker/cli-plugins/docker-compose
+{{- end }}
+
 # VS Code stores user settings in different locations on macOS and Linux.
 {{- if ne .chezmoi.os "darwin" }}
 Library/Application Support/Code

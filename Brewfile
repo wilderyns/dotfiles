@@ -33,7 +33,11 @@ brew 'hugo'
 brew 'openvpn'
 brew 'opentofu'
 brew 'docker'
+brew 'docker-buildx' if OS.mac?
 brew 'docker-compose'
+brew 'docker-credential-helper' if OS.mac?
+brew 'colima' if OS.mac?
+brew 'lazydocker'
 
 # CocoaPods is also managed by Mise through its gem backend.
 cask 'android-platform-tools' if OS.mac?
@@ -91,8 +95,6 @@ cask '1password-cli' if OS.mac?
 cask 'appcleaner'	if OS.mac?
 cask 'balenaetcher'	if OS.mac?
 cask 'chatgpt'	if OS.mac?
-cask 'docker-desktop'	if OS.mac?
-# TODO: Replace with Dockhand container
 cask 'daisydisk'	if OS.mac?
 cask 'discord'	if OS.mac?
 cask 'cyberduck'	if OS.mac?
@@ -179,7 +181,6 @@ brew 'sqlmap'
 cask 'burp-suite' if OS.mac?
 
 ## Password testing
-brew 'netcat'
 brew 'john'
 brew 'hydra'
 

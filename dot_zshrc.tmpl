@@ -27,7 +27,8 @@ alias vim="nvim"
 
 # Work on and synchronize the chezmoi source repository.
 dots() {
-  local source_dir action commit_message
+  local source_dir action home_status line import_diff import_answer source_status commit_message
+  local -a import_paths
   source_dir="$(chezmoi source-path)" || return
   action="${1:-}"
 
@@ -35,9 +36,19 @@ dots() {
     "")
       cd "$source_dir" || return
       ;;
-    diff|apply|update)
+    diff)
       shift
-      chezmoi "$action" "$@"
+      chezmoi --no-pager diff "$@"
+      ;;
+    apply|update)
+      shift
+      if [[ "$action" == update ]]; then
+        print "Pulling updates into the dotfiles repo, then applying them to your home folder."
+      else
+        print "Applying files from the dotfiles repo to your home folder."
+      fi
+      print "If asked about a home file you edited, choose diff to review it or skip to keep it."
+      chezmoi --no-pager "$action" "$@"
       ;;
     push)
       shift
@@ -46,21 +57,37 @@ dots() {
         return 2
       fi
 
-      # Import approved changes from managed, non-template files first.
-      chezmoi re-add --interactive || return
-      git -C "$source_dir" add -A || return
+      # The first status column identifies changes made in the home folder.
+      home_status="$(chezmoi --color=false status --include=files --path-style=absolute)" || return
+      for line in "${(@f)home_status}"; do
+        case "$line" in
+          [AM]M\ *) import_paths+=("${line:3}") ;;
+        esac
+      done
 
-      if git -C "$source_dir" diff --cached --quiet; then
+      if (( ${#import_paths} )); then
+        import_diff="$(chezmoi --no-pager --interactive=false --dry-run --verbose re-add -- "${import_paths[@]}")" || return
+        if [[ -n "$import_diff" ]]; then
+          print "Managed files edited in your home folder:"
+          print -r -- "$import_diff"
+          read -r "import_answer?Replace the repo versions shown with your home edits? [y/N] " || return
+          if [[ "${import_answer:l}" == y || "${import_answer:l}" == yes ]]; then
+            chezmoi --no-pager --interactive=false re-add -- "${import_paths[@]}" || return
+          fi
+        fi
+      fi
+
+      source_status="$(git --no-pager -C "$source_dir" status --short --untracked-files=all)" || return
+      if [[ -z "$source_status" ]]; then
         print "No dotfile changes to commit."
         return 0
       fi
 
-      print "Changes to commit:"
-      git -C "$source_dir" status --short
-      git -C "$source_dir" diff --cached --stat
+      print "Dotfiles repo changes to commit:"
+      print -r -- "$source_status"
       print
 
-      if ! read "commit_message?Commit message: "; then
+      if ! read -r "commit_message?Commit message: "; then
         print -u2 "Commit cancelled."
         return 1
       fi
@@ -69,6 +96,7 @@ dots() {
         return 1
       fi
 
+      git -C "$source_dir" add -A || return
       git -C "$source_dir" commit -m "$commit_message" || return
       git -C "$source_dir" push
       ;;
@@ -77,9 +105,9 @@ dots() {
       print "  dots                 Change to the chezmoi source directory"
       print "  dots <editor>        Open the source directory in an editor"
       print "  dots diff            Preview unapplied changes"
-      print "  dots apply           Apply source changes"
-      print "  dots update          Pull and apply remote changes"
-      print "  dots push            Re-add, commit, and push local changes"
+      print "  dots apply           Copy managed files from the repo to your home folder"
+      print "  dots update          Pull remote changes and apply them to your home folder"
+      print "  dots push            Review home edits, then commit and push repo changes"
       ;;
     *)
       "$@" "$source_dir"

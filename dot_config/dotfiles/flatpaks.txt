@@ -4,6 +4,7 @@ com.obsproject.Studio
 org.libreoffice.LibreOffice
 com.discordapp.Discord
 com.github.zocker_160.SyncThingy
+com.moonlight_stream.Moonlight
 com.usebruno.Bruno
 dev.deedles.Trayscale
 io.github.Faugus.faugus-launcher
@@ -12,4 +13,5 @@ md.obsidian.Obsidian
 net.retrodeck.retrodeck
 org.desktop_plus.desktop-plus
 org.filezillaproject.Filezilla
+org.zotero.Zotero
 sh.cider.Cider
